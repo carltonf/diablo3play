@@ -1,0 +1,123 @@
+#+STARTUP: latexpreview
+
+* Decision Helpers
+** TODO Marginal Benefit.
+
+*Goal* If you have multiple options for one enchanting, what the most marginal
+benefit you can get.
+** TODO Combinatorial Maximum
+
+*Goal* Given several enchanting, each with its own options, get a global
+maximum.
+
+* TODO DPS with All factor categories
+
+Really needed?
+
+* Detailed ActualDPS
+*Overall NOTE:* A categorically hierarchical set of multipliers, factors within
+the same category are aggregated additive.
+
+| [[*SheetDPS][SheetDPS]] | [[*SkillWeaponDamageFactor][SkillDamageFactor]] | [[*ConditionalDamageFactor][ConditionalDamageFactor]] | ActualDPS |
+|----------+-------------------+-------------------------+-----------|
+|          |                   |                         |           |
+
+** SheetDPS
+
+What you see on the character details page.
+
+| [[*BaseStatFactor][BaseStatFactor]] | [[*BaseDamageFactor][BaseDamageFactor]] | [[*CritFactor][CritFactor]] | [[*SkillDamageBonusFactor][SkillDamageBonusFactor]] | [[*SpeedFactor][SpeedFactor]] | SheetDPS |
+|----------------+------------------+------------+------------------------+-------------+----------|
+|                |                  |            |                        |             |          | 
+
+*** BaseStatFactor
+
+DEX, STR or INT depending on your class.
+
+*** BaseDamageFactor
+
+| [[*WeaponBaseDamageFactor][WeaponBaseDamageFactor]] | JewelryBaseDamageFactor | BaseDamageFactor |
+|------------------------+-------------------------+------------------|
+|                        |                         |                  |
+
+**** WeaponBaseDamageFactor
+The small damage number written on the weapon. Damage bonus from rubies in the
+weapon socket are automatically factored into this number.
+
+*Note* that the big white damage number is the average DPS computed from the
+small damage number and the attacks per second.
+
+*Also* dual wielding hits with only one weapon at the time and alternates
+between them.
+
+**** JewelryBaseDamageFactor
+
+Just the damage number on the jewelry.
+
+*** CritFactor
+
+| CritChance | CritDamage | CritFactor (+ 100%) |
+|------------+------------+---------------------|
+|            |            |                     |
+
+**** Useful Tips
+On enchanting items, the =CritChance= and =CritDamage= has the ration of 1:10,
+which, with some simple math, dictates that to get the best throughput you
+should maintain this ration.
+
+So to optimize the output, try to close down on the following value
+
+Given =a= and =b= are =CritChance= and =CritDamage= separately, the best
+possible adjustment should be:
+
+\begin{align}
+  \Delta c = \frac{a - b/10}{2}
+  \\
+  a' = a - \Delta c
+  \\
+  b' = b - 10\Delta c
+\end{align}
+
+*** SkillDamageBonusFactor
+
+Certain skills (including Passive ones) can increase damage.
+
+*** SpeedFactor
+
+This is the one that changes this from a Damage Formula to a DPS formula.
+
+| WeaponAttackRate | SpeedBonusFactor (+ 100%) | T |
+|------------------+---------------------------+---|
+|                  |                           |   |
+
+
+**** TODO More complicated with Dual Wielding.
+
+** SkillDamageFactor
+
+| NativeSkillDamageFactor | SpecificSkillBonusFactor(+ 100%) | ElementalDamageFactor(+ 100%) | T |
+|-------------------------+----------------------------------+-------------------------------+---|
+|                         |                                  |                               |   |
+
+** ConditionalDamageFactor
+
+Many important factors are only effective under certain conditions. The are
+multipliers on their own. These dynamics factors are what truly characterize a
+battle.
+
+The following is a list of known ones:
+
+- =EliteDamageFactor=
+- =StatusDamageFactor=
+  
+  Like the =Bastions of Rings=, which activates 8s 50% overall damage bonus for
+  generator and spender each.
+- =CombatConditionFactors=
+  
+  Many special effects fall into this category: distance between you and
+  enemies, whether the enemy is under impairment control effect and etc.
+
+* Useful links
+- [[http://us.battle.net/d3/en/calculator/][Calculator - Game Guide - Diablo III]]
+  
+  Can select skill sets.
